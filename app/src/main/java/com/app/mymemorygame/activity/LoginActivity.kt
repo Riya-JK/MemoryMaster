@@ -16,7 +16,6 @@ import org.w3c.dom.Text
 
 class LoginActivity : AppCompatActivity() {
     lateinit var  submitButton : Button
-    lateinit var forgot_password : TextView
     lateinit var binding: ActivityLoginBinding
     lateinit var firebaseDatabase : FirebaseDatabase
     lateinit var databaseReference: DatabaseReference
@@ -28,22 +27,17 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         clRoot = binding.clRoot
-        forgot_password = findViewById(R.id.forgot_password)
         submitButton = findViewById(R.id.submit_button_login_screen)
 
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference.child("users")
 
         submitButton?.setOnClickListener {
-            val email = binding.emailLogin.text.toString()
+            val username = binding.usernameLogin.text.toString()
             val password = binding.passwordForLogin.text.toString()
 
-            if(email.isNotBlank() && email.isNotEmpty() && password.isNotBlank() && password.isNotEmpty()){
-                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    Snackbar.make(clRoot, "Invalid email address", Snackbar.LENGTH_SHORT).show()
-                } else {
-                    loginUser(email, password)
-                }
+            if(username.isNotBlank() && username.isNotEmpty() && password.isNotBlank() && password.isNotEmpty()){
+                loginUser(username, password)
             }else{
                 Snackbar.make(clRoot, "All fields are required", Snackbar.LENGTH_SHORT).show()
             }
@@ -55,8 +49,8 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun loginUser(email : String, password : String){
-        databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(object : ValueEventListener{
+    private fun loginUser(username : String, password : String){
+        databaseReference.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(snapshot.exists()){
                     for(userSnapShot in snapshot.children){
@@ -72,6 +66,8 @@ class LoginActivity : AppCompatActivity() {
                             Snackbar.make(clRoot, "Invalid credentials", Snackbar.LENGTH_SHORT).show()
                         }
                     }
+                }else{
+                    Snackbar.make(clRoot, "User does not exist", Snackbar.LENGTH_SHORT).show()
                 }
             }
 

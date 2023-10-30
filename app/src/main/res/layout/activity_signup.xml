@@ -47,7 +47,7 @@
             android:text="Sign up to play!" />
 
         <TextView
-            android:id="@+id/enter_email_label"
+            android:id="@+id/enter_username_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
@@ -56,10 +56,10 @@
             android:layout_marginTop="10dp"
             android:padding="10dp"
             android:textColor="@color/pink"
-            android:text="Email" />
+            android:text="Create Username" />
 
         <EditText
-            android:id="@+id/email_signup"
+            android:id="@+id/username_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -68,7 +68,7 @@
             android:padding="5dp"
             android:layout_marginEnd="40dp"
             android:layout_marginStart="40dp"
-            android:hint="Enter email"
+            android:hint="Enter username"
             android:textColor="@color/black"
             android:textColorHint="@color/hint_text_color"
             app:layout_constraintBottom_toBottomOf="parent"

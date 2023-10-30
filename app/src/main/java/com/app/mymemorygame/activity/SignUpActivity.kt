@@ -42,15 +42,11 @@ class SignUpActivity : AppCompatActivity() {
         createAccountButton = findViewById(R.id.submit_button_signup_screen)
 
         createAccountButton?.setOnClickListener {
-            val email = binding.emailSignup.text.toString()
+            val username = binding.usernameSignup.text.toString()
             val password = binding.passwordSignup.text.toString()
 
-            if(email.isNotBlank() && email.isNotEmpty() && password.isNotBlank() && password.isNotEmpty()){
-                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    Snackbar.make(clRoot, "Invalid email address", Snackbar.LENGTH_SHORT).show()
-                } else {
-                    signUpUser(email, password)
-                }
+            if(username.isNotBlank() && username.isNotEmpty() && password.isNotBlank() && password.isNotEmpty()){
+                signUpUser(username, password)
             }else{
                 Snackbar.make(clRoot, "All fields are required", Snackbar.LENGTH_SHORT).show()
             }
@@ -61,12 +57,12 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    fun signUpUser(email : String, password : String){
-        databaseReference.orderByChild("email").equalTo(email).addListenerForSingleValueEvent(object : ValueEventListener{
+    fun signUpUser(username : String, password : String){
+        databaseReference.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(!snapshot.exists()){
                     val id = databaseReference.push().key
-                    val user_data = UserData(id, email, password)
+                    val user_data = UserData(id, username, password)
                     databaseReference.child(id!!).setValue(user_data)
                     Snackbar.make(clRoot, "Sign up successfull", Snackbar.LENGTH_SHORT).show()
                     startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
