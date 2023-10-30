@@ -1,4 +1,4 @@
-package com.app.mymemorygame
+package com.app.mymemorygame.activity
 
 import android.app.Activity
 import android.content.Intent
@@ -23,11 +23,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.app.mymemorygame.utils.BitmapScaler
+import com.app.mymemorygame.R
+import com.app.mymemorygame.adapter.ImagePickerAdapter
 import com.app.mymemorygame.models.BoardSize
 import com.app.mymemorygame.utils.EXTRA_BOARD_SIZE
 import com.app.mymemorygame.utils.EXTRA_GAME_NAME
 import com.app.mymemorygame.utils.PermissionUtils
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage

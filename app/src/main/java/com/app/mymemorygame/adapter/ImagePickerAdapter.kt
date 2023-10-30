@@ -1,4 +1,4 @@
-package com.app.mymemorygame
+package com.app.mymemorygame.adapter
 
 import android.content.Context
 import android.net.Uri
@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.recyclerview.widget.RecyclerView
+import com.app.mymemorygame.R
 import com.app.mymemorygame.models.BoardSize
 import kotlin.math.min
 

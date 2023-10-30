@@ -1,7 +1,6 @@
-package com.app.mymemorygame
+package com.app.mymemorygame.adapter
 
 import android.content.Context
-import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +11,9 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.app.mymemorygame.R
 import com.app.mymemorygame.models.BoardSize
 import com.app.mymemorygame.models.MemoryCard
-import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import kotlin.math.min
 
@@ -46,7 +45,7 @@ class MemoryBoardAdapter(
                     imageButton.setImageResource(memoryCard.identifier)
                 }
             }else{
-                imageButton.setImageResource(R.drawable.back_ground_img)
+                imageButton.setImageResource(R.drawable.ic_card_background)
             }
 
             imageButton.alpha = if(memoryCard.isMatched) .4f else 1.0f

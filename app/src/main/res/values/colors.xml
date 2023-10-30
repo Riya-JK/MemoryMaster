@@ -13,4 +13,9 @@
     <color name="green_dark">#315C4B</color>
     <color name="green_darkest">#315C4B</color>
     <color name="green_blue">#FF018786</color>
+    <color name="green">#4fa853</color>
+    <color name="blue">#59b5df</color>
+    <color name="green_button">#2FBEC7</color>
+    <color name="pink">#8b295E</color>
+    <color name="hint_text_color">#B09494</color>
 </resources>

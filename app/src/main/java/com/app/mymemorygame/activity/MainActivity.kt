@@ -1,4 +1,4 @@
-package com.app.mymemorygame
+package com.app.mymemorygame.activity
 
 import android.animation.ArgbEvaluator
 import android.app.Activity
@@ -15,11 +15,12 @@ import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.app.mymemorygame.R
+import com.app.mymemorygame.adapter.MemoryBoardAdapter
 import com.app.mymemorygame.models.BoardSize
 import com.app.mymemorygame.models.MemoryGame
 import com.app.mymemorygame.models.UserImageList
@@ -29,7 +30,6 @@ import com.github.jinatonic.confetti.CommonConfetti
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() {
@@ -86,8 +86,18 @@ class MainActivity : AppCompatActivity() {
                 showDownloadDialog()
                 return true
             }
+            R.id.mi_logout ->{
+                logoutUser()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun logoutUser() {
+        startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+        finish()
+        return
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

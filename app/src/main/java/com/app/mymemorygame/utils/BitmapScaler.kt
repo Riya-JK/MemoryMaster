@@ -1,4 +1,4 @@
-package com.app.mymemorygame
+package com.app.mymemorygame.utils
 
 import android.graphics.Bitmap
 

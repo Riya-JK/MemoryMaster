@@ -1,0 +1,16 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#D3D3D3" /> <!-- Set the background color to grey -->
+            <corners android:radius="8dp" /> <!-- Set the corner radius to 8dp -->
+        </shape>
+    </item>
+    <item android:right="2dp" android:left="2dp" android:top="2dp" android:bottom="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFFFF" /> <!-- Set the background color to white -->
+            <corners android:radius="8dp" /> <!-- Set the corner radius to 8dp -->
+        </shape>
+    </item>
+</layer-list>
+
+
