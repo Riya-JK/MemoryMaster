@@ -26,6 +26,7 @@ import com.app.mymemorygame.models.MemoryGame
 import com.app.mymemorygame.models.UserImageList
 import com.app.mymemorygame.utils.EXTRA_BOARD_SIZE
 import com.app.mymemorygame.utils.EXTRA_GAME_NAME
+import com.app.mymemorygame.utils.EXTRA_USER_NAME
 import com.github.jinatonic.confetti.CommonConfetti
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     private var gameName : String? = null
     private var customGameImages : List<String>? = null
+    private lateinit var username : String
 
     private var boardSize : BoardSize = BoardSize.EASY
     val TAG : String  = MainActivity::class.java.simpleName
@@ -55,7 +57,11 @@ class MainActivity : AppCompatActivity() {
         tvNumMoves = findViewById(R.id.tvNumMoves)
         tvNumPairs = findViewById(R.id.tvNumPairs)
         clRoot = findViewById(R.id.clRoot)
-
+        val bundle: Bundle? = intent.extras
+        if (bundle != null) {
+            val value = bundle.getString(EXTRA_USER_NAME).toString()
+            username = value
+        }
         setUpBoard()
     }
 
@@ -116,11 +122,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun downloadGame(customGameName: String) {
         Log.d( TAG,"Downloading game")
-        db.collection("games").document(customGameName).get().addOnSuccessListener {document ->
+        db.collection("games").document("$username $customGameName").get().addOnSuccessListener { document ->
             val userImageList = document.toObject(UserImageList::class.java)
             if(userImageList?.images == null){
                 Log.d( TAG,"Invalid custom game data from firestore")
-                Snackbar.make(clRoot, "Sorry, we couldn't find such a game $customGameName", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(clRoot, "Sorry, we couldn't find such a game $customGameName under username $username", Snackbar.LENGTH_SHORT).show()
                 return@addOnSuccessListener
             }
             Log.d( TAG,"Game downloaded successfully with images : " + userImageList.images)
@@ -181,6 +187,7 @@ class MainActivity : AppCompatActivity() {
             //Navigate to new activity
             val intent = Intent(this, CreateActivity::class.java)
             intent.putExtra(EXTRA_BOARD_SIZE, desiredBoardSize)
+            intent.putExtra(EXTRA_USER_NAME, username)
             startActivityForResult(intent, CREATE_REQUEST_CODE)
         })
     }

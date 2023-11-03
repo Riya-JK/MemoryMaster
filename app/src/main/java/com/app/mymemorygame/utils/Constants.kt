@@ -4,6 +4,8 @@ import com.app.mymemorygame.R
 
     val EXTRA_GAME_NAME = "EXTRA_GAME_NAME"
     val EXTRA_BOARD_SIZE = "EXTRA_BOARD_SIZE"
+    val EXTRA_USER_NAME = "EXTRA_USER_NAME"
+
     public val DEFAULT_ICONS = listOf(
         R.drawable.ic_face,
         R.drawable.ic_flower,

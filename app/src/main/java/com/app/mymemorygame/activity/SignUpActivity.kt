@@ -2,6 +2,7 @@ package com.app.mymemorygame.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.os.PersistableBundle
 import android.util.Log
 import android.widget.Button
@@ -58,15 +59,22 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     fun signUpUser(username : String, password : String){
-        databaseReference.orderByChild("username").equalTo(username).addListenerForSingleValueEvent(object : ValueEventListener{
+        databaseReference.orderByChild("b").equalTo(username).addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(!snapshot.exists()){
                     val id = databaseReference.push().key
-                    val user_data = UserData(id, username, password)
-                    databaseReference.child(id!!).setValue(user_data)
+                    val userData = UserData(a = id, b = username, c = password)
+                    databaseReference.child(id!!).setValue(userData)
                     Snackbar.make(clRoot, "Sign up successfull", Snackbar.LENGTH_SHORT).show()
-                    startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
-                    finish()
+                    val handler = Handler()
+                    val runnable = object : Runnable {
+                        override fun run () {
+                            startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
+                            finish()
+                        }
+                    }
+                    val delayMillis: Long = 1000
+                    handler.postDelayed(runnable, delayMillis)
                 }else{
                     Snackbar.make(clRoot, "User already exists", Snackbar.LENGTH_SHORT).show()
                 }

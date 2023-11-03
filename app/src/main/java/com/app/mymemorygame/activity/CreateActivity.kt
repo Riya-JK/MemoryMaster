@@ -23,13 +23,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.app.mymemorygame.utils.BitmapScaler
 import com.app.mymemorygame.R
 import com.app.mymemorygame.adapter.ImagePickerAdapter
 import com.app.mymemorygame.models.BoardSize
-import com.app.mymemorygame.utils.EXTRA_BOARD_SIZE
-import com.app.mymemorygame.utils.EXTRA_GAME_NAME
-import com.app.mymemorygame.utils.PermissionUtils
+import com.app.mymemorygame.utils.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
@@ -48,7 +45,7 @@ class CreateActivity : AppCompatActivity() , ImagePickerAdapter.ImageClickListen
     private val storage = Firebase.storage
     private val db = Firebase.firestore
     private lateinit var pbUploading : ProgressBar
-
+    private lateinit var username : String
     companion object{
         val PICK_PHOTOS: Int = 655
         const val READ_PHOTOS_PERMISSION = android.Manifest.permission.READ_EXTERNAL_STORAGE
@@ -64,7 +61,6 @@ class CreateActivity : AppCompatActivity() , ImagePickerAdapter.ImageClickListen
         etGameName = findViewById(R.id.editTextTGameName)
         btnSave = findViewById(R.id.btnSave)
         pbUploading = findViewById(R.id.pbUploading)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val boardSize = intent.getSerializableExtra(EXTRA_BOARD_SIZE) as BoardSize
         numImagesRequired = boardSize.getNumPairs()
@@ -73,6 +69,13 @@ class CreateActivity : AppCompatActivity() , ImagePickerAdapter.ImageClickListen
         btnSave.setOnClickListener(View.OnClickListener {
             saveDataToFireBase()
         })
+
+        val bundle: Bundle? = intent.extras
+        if (bundle != null) {
+            val value = bundle.getString(EXTRA_USER_NAME).toString()
+            username = value
+        }
+
         etGameName.filters = arrayOf(InputFilter.LengthFilter(MAX_GAME_LENGTH))
         etGameName.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -175,7 +178,7 @@ class CreateActivity : AppCompatActivity() , ImagePickerAdapter.ImageClickListen
         btnSave.isEnabled = false
         val customGameName : String = etGameName.text.toString()
         //check that we're not overwriting the same name
-        db.collection("games").document(customGameName).get().addOnSuccessListener {
+        db.collection("games").document("$username $customGameName").get().addOnSuccessListener {
             if(it != null && it.data != null){
                 AlertDialog.Builder(this)
                     .setTitle("Name Taken")
@@ -199,7 +202,7 @@ class CreateActivity : AppCompatActivity() , ImagePickerAdapter.ImageClickListen
         var didEncounterError = false
         for((index, photoUri) in chosenImageUris.withIndex()){
             val imageByteArray = gatImageByteArray(photoUri)
-            val filePath = "images/$gameName/${System.currentTimeMillis()}-${index}.jpg"
+            val filePath = "images/$username/$gameName/${System.currentTimeMillis()}-${index}.jpg"
             val photoReference = storage.reference.child(filePath)
             photoReference.putBytes(imageByteArray)
                 .continueWith{
@@ -233,7 +236,7 @@ class CreateActivity : AppCompatActivity() , ImagePickerAdapter.ImageClickListen
     private fun handleAllImagesUploaded(gameName: String, imageUrls: MutableList<String>) {
         //Upload  this info to firestore
         Log.d(TAG,"Image urls $imageUrls")
-        db.collection("games").document(gameName)
+        db.collection("games").document("$username $gameName")
             .set(mapOf("images" to imageUrls))
             .addOnCompleteListener{gameCreationTask ->
                 pbUploading.visibility = View.GONE
