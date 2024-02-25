@@ -1,4 +1,4 @@
-package com.app.mymemorygame.activity
+package com.app.mymemorygame.presentation
 
 import android.animation.ArgbEvaluator
 import android.app.Activity
@@ -7,10 +7,7 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -46,6 +43,9 @@ class MainActivity : AppCompatActivity() {
     private var gameName : String? = null
     private var customGameImages : List<String>? = null
     private lateinit var username : String
+    private var savedInstanceState = null
+    private var isMenuVisible = false
+    private lateinit var menuBar : Menu
 
     private var boardSize : BoardSize = BoardSize.EASY
     val TAG : String  = MainActivity::class.java.simpleName
@@ -57,6 +57,57 @@ class MainActivity : AppCompatActivity() {
         tvNumMoves = findViewById(R.id.tvNumMoves)
         tvNumPairs = findViewById(R.id.tvNumPairs)
         clRoot = findViewById(R.id.clRoot)
+
+        // Check if the activity is created for the first time
+        launchLoginFragment(savedInstanceState)
+
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        if (menu != null) {
+            menuBar = menu
+        }
+        val menuItem = menu?.findItem(R.id.menu_refresh)
+        val menuSize = menu?.findItem(R.id.mi_new_size)
+        val menuDownload = menu?.findItem(R.id.mi_download)
+        val menuCustom = menu?.findItem(R.id.mi_custom)
+        val menuLogout = menu?.findItem(R.id.mi_logout)
+        menuItem?.isVisible = isMenuVisible
+        menuSize?.isVisible = isMenuVisible
+        menuDownload?.isVisible = isMenuVisible
+        menuCustom?.isVisible = isMenuVisible
+        menuLogout?.isVisible = isMenuVisible
+        return true
+    }
+
+    private fun launchLoginFragment(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            val fragment = LoginFragment()
+            val fragmentManager = supportFragmentManager
+            val fragmentTransaction = fragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fragment_container, fragment)
+            // Commit the transaction
+            fragmentTransaction.commit()
+        }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        Log.d(TAG, "onNewIntent() called with: intent = $intent")
+        super.onNewIntent(intent)
+        isMenuVisible = true
+        invalidateOptionsMenu()
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentManager.findFragmentById(R.id.fragment_container)
+            ?.let { fragmentTransaction.remove(it) }
+        fragmentTransaction.commit()
+
+        if (intent != null) {
+            handleIntent(intent)
+        }
+    }
+
+    private fun handleIntent(intent: Intent) {
         val bundle: Bundle? = intent.extras
         if (bundle != null) {
             val value = bundle.getString(EXTRA_USER_NAME).toString()
@@ -67,6 +118,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+        if (menu != null) {
+            menuBar = menu
+        }
         return true
     }
 
@@ -101,8 +155,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun logoutUser() {
-        startActivity(Intent(this@MainActivity, LoginActivity::class.java))
-        finish()
+        launchLoginFragment(savedInstanceState)
         return
     }
 

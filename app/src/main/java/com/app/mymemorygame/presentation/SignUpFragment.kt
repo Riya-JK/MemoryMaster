@@ -1,50 +1,59 @@
-package com.app.mymemorygame.activity
+package com.app.mymemorygame.presentation
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.os.PersistableBundle
-import android.util.Log
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.app.mymemorygame.R
-import com.app.mymemorygame.databinding.ActivitySignupBinding
 import com.app.mymemorygame.models.UserData
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 import com.google.firebase.database.*
-import org.w3c.dom.Text
-import kotlin.math.sign
 
-class SignUpActivity : AppCompatActivity() {
-    private val TAG: String? = SignUpActivity::class.java.simpleName
+// TODO: Rename parameter arguments, choose names that match
+/**
+ * A simple [Fragment] subclass.
+ * Use the [SignUpFragment.newInstance] factory method to
+ * create an instance of this fragment.
+ */
+class SignUpFragment : Fragment() {
+    private val TAG: String? = SignUpFragment::class.java.simpleName
     lateinit var  createAccountButton : Button
-    lateinit var login_button : TextView
-    lateinit var binding: ActivitySignupBinding
     lateinit var firebaseDatabase : FirebaseDatabase
     lateinit var databaseReference: DatabaseReference
-    lateinit var clRoot : ConstraintLayout
+    lateinit var clRoot : FrameLayout
+    lateinit var userName : EditText
+    lateinit var password : EditText
+    lateinit var loginUserText: TextView
+    lateinit var  submitButton : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_signup)
-        Log.d(TAG,"onCreate() called")
-
-        binding = ActivitySignupBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        clRoot = binding.clRoot
         firebaseDatabase = FirebaseDatabase.getInstance()
         databaseReference = firebaseDatabase.reference.child("users")
+    }
 
-        login_button = findViewById(R.id.or_login_label)
-        createAccountButton = findViewById(R.id.submit_button_signup_screen)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        val v = inflater.inflate(R.layout.fragment_sign_up, container, false)
+        clRoot = v.findViewById(R.id.container_child_fragment_signup)
+        submitButton = v.findViewById(R.id.submit_button_signup_screen)
+        userName = v.findViewById(R.id.username_signup)
+        password = v.findViewById(R.id.password_signup)
+        loginUserText = v.findViewById(R.id.login_label)
+        createAccountButton = v.findViewById(R.id.submit_button_signup_screen)
 
         createAccountButton?.setOnClickListener {
-            val username = binding.usernameSignup.text.toString()
-            val password = binding.passwordSignup.text.toString()
+            val username = userName.text.toString()
+            val password = password.text.toString()
 
             if(username.isNotBlank() && username.isNotEmpty() && password.isNotBlank() && password.isNotEmpty()){
                 signUpUser(username, password)
@@ -53,13 +62,15 @@ class SignUpActivity : AppCompatActivity() {
             }
         }
 
-        login_button.setOnClickListener{
-            startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
+        loginUserText.setOnClickListener{
+            fragmentManager?.popBackStack()
         }
+        return v
     }
 
     fun signUpUser(username : String, password : String){
-        databaseReference.orderByChild("b").equalTo(username).addListenerForSingleValueEvent(object : ValueEventListener{
+        databaseReference.orderByChild("b").equalTo(username).addListenerForSingleValueEvent(object :
+            ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if(!snapshot.exists()){
                     val id = databaseReference.push().key
@@ -69,8 +80,7 @@ class SignUpActivity : AppCompatActivity() {
                     val handler = Handler()
                     val runnable = object : Runnable {
                         override fun run () {
-                            startActivity(Intent(this@SignUpActivity, LoginActivity::class.java))
-                            finish()
+                            fragmentManager?.popBackStack()
                         }
                     }
                     val delayMillis: Long = 1000
@@ -84,5 +94,10 @@ class SignUpActivity : AppCompatActivity() {
                 Snackbar.make(clRoot, "Database Error : ${error.message}", Snackbar.LENGTH_SHORT).show()
             }
         })
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = SignUpFragment()
     }
 }

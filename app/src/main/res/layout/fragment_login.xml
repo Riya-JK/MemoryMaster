@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_signup_background"
-    tools:context=".activity.SignUpActivity"
+    tools:context=".presentation.LoginActivity"
+    android:id="@+id/clRoot"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintLeft_toRightOf="parent"
-    android:id="@+id/clRoot"
     app:layout_constraintRight_toLeftOf="parent">
 
     <LinearLayout
@@ -25,7 +25,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/signup_form_label"
+            android:id="@+id/login_form_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="30sp"
@@ -33,10 +33,10 @@
             android:gravity="center"
             android:padding="10dp"
             android:textColor="@color/pink"
-            android:text="Create Account" />
+            android:text="Welcome back! " />
 
         <TextView
-            android:id="@+id/signup_to_play_label"
+            android:id="@+id/login_to_play_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
@@ -44,31 +44,31 @@
             android:gravity="center"
             android:padding="2dp"
             android:textColor="@color/pink"
-            android:text="Sign up to play!" />
+            android:text="Login to play!" />
 
         <TextView
             android:id="@+id/enter_username_label"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:layout_marginStart="40dp"
             android:textStyle="bold"
             android:layout_marginTop="10dp"
             android:padding="10dp"
+            android:layout_marginStart="40dp"
             android:textColor="@color/pink"
-            android:text="Create Username" />
+            android:text="Username" />
 
         <EditText
-            android:id="@+id/username_signup"
+            android:id="@+id/username_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
             android:background="@drawable/edit_text_border"
             android:inputType="textEmailAddress"
             android:padding="5dp"
+            android:hint="Enter username"
             android:layout_marginEnd="40dp"
             android:layout_marginStart="40dp"
-            android:hint="Enter username"
             android:textColor="@color/black"
             android:textColorHint="@color/hint_text_color"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -83,48 +83,56 @@
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textStyle="bold"
-            android:layout_marginStart="40dp"
             android:padding="10dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="10dp"
             android:textColor="@color/pink"
-            android:text="Create Password" />
+            android:text="Password" />
 
         <EditText
-            android:id="@+id/password_signup"
+            android:id="@+id/password_for_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/edit_text_border"
             android:ems="10"
             android:hint="Enter password"
-            android:padding="5dp"
             android:layout_marginEnd="40dp"
+            android:layout_marginStart="40dp"
+            android:padding="5dp"
             android:textColor="@color/black"
             android:textColorHint="@color/hint_text_color"
             android:inputType="textPassword"
-            android:layout_marginStart="40dp"
-            app:layout_constraintStart_toStartOf="@id/user_name"
-            app:layout_constraintTop_toBottomOf="@+id/user_name" />
+            app:layout_constraintStart_toStartOf="@id/email_login"
+            app:layout_constraintTop_toBottomOf="@+id/email_login" />
 
         <TextView
-            android:id="@+id/or_login_label"
+            android:id="@+id/new_user_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:padding="10dp"
             android:layout_marginTop="40dp"
+            android:padding="10dp"
             android:textColor="@color/pink"
-            android:text="Existing user? Login" />
+            android:text="New user? Create Account" />
+
         <Button
-            android:id="@+id/submit_button_signup_screen"
+            android:id="@+id/submit_button_login_screen"
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_gravity="bottom"
             android:layout_marginStart="56dp"
-            android:textColor="@color/white"
             android:background="@drawable/button_background"
-            android:text="Create Account" />
+            android:text="Submit"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="@+id/password"
+            app:layout_constraintTop_toBottomOf="@+id/password" />
 
     </LinearLayout>
+    <FrameLayout
+        android:id="@+id/container_child_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

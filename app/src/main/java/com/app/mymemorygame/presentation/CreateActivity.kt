@@ -1,4 +1,4 @@
-package com.app.mymemorygame.activity
+package com.app.mymemorygame.presentation
 
 import android.app.Activity
 import android.content.Intent
