@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic_signup_background"
-    tools:context=".presentation.SignUpActivity"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintLeft_toRightOf="parent"
     android:id="@+id/clRoot"
@@ -43,6 +42,7 @@
             android:textStyle="bold"
             android:gravity="center"
             android:padding="2dp"
+            android:layout_marginBottom="10dp"
             android:textColor="@color/pink"
             android:text="Sign up to play!" />
 
@@ -65,7 +65,7 @@
             android:ems="10"
             android:background="@drawable/edit_text_border"
             android:inputType="textEmailAddress"
-            android:padding="5dp"
+            android:padding="10dp"
             android:layout_marginEnd="40dp"
             android:layout_marginStart="40dp"
             android:hint="Enter username"
@@ -96,7 +96,7 @@
             android:background="@drawable/edit_text_border"
             android:ems="10"
             android:hint="Enter password"
-            android:padding="5dp"
+            android:padding="10dp"
             android:layout_marginEnd="40dp"
             android:textColor="@color/black"
             android:textColorHint="@color/hint_text_color"
@@ -112,7 +112,7 @@
             android:textSize="15sp"
             android:textStyle="bold"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="20dp"
             android:layout_marginTop="40dp"
             android:textColor="@color/pink"
             android:text="Existing user? Login" />
