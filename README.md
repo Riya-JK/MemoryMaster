@@ -1,5 +1,9 @@
 # MemoryMaster
-Memory Master is the ultimate memory game app that offers three exciting levels of difficulty, catering to players of all ages and skills. Test your memory prowess and have a blast while doing it! With easy, medium, and hard modes, you can tailor the game to match your skill level and enjoy a fun mental workout.
+Memory Master is an Android based memory game app purely coded in Kotlin. I designed the UI for this game using Figma and this helped me plan out the theme and the assets in advance for the UI development. I leveraged various Firebase features such as the Firebase Realtime DB to store and retrieve the user credentials for user login and signup. In addition to that, I used the Firestore to save the custom images added by the user and Firebase Database to save all the games played by all the users. The game is put together in an MVC architecture pattern considering the small scale size of the app. 
+
+Here is a gist of what the game offers :
+
+The game offers three exciting levels of difficulty, catering to players of all ages and skills. Test your memory prowess and have a blast while doing it! With easy, medium, and hard modes, you can tailor the game to match your skill level and enjoy a fun mental workout.
 
 Features:
 
