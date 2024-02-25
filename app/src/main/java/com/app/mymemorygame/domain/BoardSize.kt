@@ -1,6 +1,4 @@
-package com.app.mymemorygame.models
-
-import com.google.protobuf.EnumValue
+package com.app.mymemorygame.domain
 
 enum class BoardSize(val numCards : Int) {
     EASY(numCards = 8),

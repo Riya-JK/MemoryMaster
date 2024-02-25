@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.app.mymemorygame.R
-import com.app.mymemorygame.models.BoardSize
+import com.app.mymemorygame.domain.BoardSize
 import kotlin.math.min
 
 class ImagePickerAdapter(private val context: Context,

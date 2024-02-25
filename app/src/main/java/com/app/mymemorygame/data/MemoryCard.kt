@@ -1,4 +1,4 @@
-package com.app.mymemorygame.models
+package com.app.mymemorygame.data
 
 data class MemoryCard(
     val identifier : Int,

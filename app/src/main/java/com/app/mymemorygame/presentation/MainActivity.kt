@@ -18,9 +18,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.mymemorygame.R
 import com.app.mymemorygame.adapter.MemoryBoardAdapter
-import com.app.mymemorygame.models.BoardSize
-import com.app.mymemorygame.models.MemoryGame
-import com.app.mymemorygame.models.UserImageList
+import com.app.mymemorygame.domain.BoardSize
+import com.app.mymemorygame.domain.MemoryGame
+import com.app.mymemorygame.data.UserImageList
+import com.app.mymemorygame.presentation.login.UserLoginFragment
 import com.app.mymemorygame.utils.EXTRA_BOARD_SIZE
 import com.app.mymemorygame.utils.EXTRA_GAME_NAME
 import com.app.mymemorygame.utils.EXTRA_USER_NAME
@@ -82,7 +83,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun launchLoginFragment(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) {
-            val fragment = LoginFragment()
+            val fragment = UserLoginFragment()
             val fragmentManager = supportFragmentManager
             val fragmentTransaction = fragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fragment_container, fragment)

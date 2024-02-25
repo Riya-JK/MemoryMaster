@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.app.mymemorygame.R
 import com.app.mymemorygame.adapter.ImagePickerAdapter
-import com.app.mymemorygame.models.BoardSize
+import com.app.mymemorygame.domain.BoardSize
 import com.app.mymemorygame.utils.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase

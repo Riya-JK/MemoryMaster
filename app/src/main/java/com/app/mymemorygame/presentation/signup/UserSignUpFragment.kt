@@ -1,4 +1,4 @@
-package com.app.mymemorygame.presentation
+package com.app.mymemorygame.presentation.signup
 
 import android.os.Bundle
 import android.os.Handler
@@ -10,32 +10,31 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.app.mymemorygame.R
-import com.app.mymemorygame.models.UserData
+import com.app.mymemorygame.data.UserData
+import com.app.mymemorygame.presentation.common.UserState
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.database.*
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 /**
  * A simple [Fragment] subclass.
- * Use the [SignUpFragment.newInstance] factory method to
+ * Use the [UserSignUpFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SignUpFragment : Fragment() {
-    private val TAG: String? = SignUpFragment::class.java.simpleName
+class UserSignUpFragment : Fragment() {
+    private val TAG: String? = UserSignUpFragment::class.java.simpleName
     lateinit var  createAccountButton : Button
-    lateinit var firebaseDatabase : FirebaseDatabase
-    lateinit var databaseReference: DatabaseReference
     lateinit var clRoot : FrameLayout
     lateinit var userName : EditText
     lateinit var password : EditText
     lateinit var loginUserText: TextView
-    lateinit var  submitButton : Button
-
+    lateinit var viewModel: UserSignUpViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        firebaseDatabase = FirebaseDatabase.getInstance()
-        databaseReference = firebaseDatabase.reference.child("users")
+        viewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)).get(UserSignUpViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -45,7 +44,6 @@ class SignUpFragment : Fragment() {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_sign_up, container, false)
         clRoot = v.findViewById(R.id.container_child_fragment_signup)
-        submitButton = v.findViewById(R.id.submit_button_signup_screen)
         userName = v.findViewById(R.id.username_signup)
         password = v.findViewById(R.id.password_signup)
         loginUserText = v.findViewById(R.id.login_label)
@@ -69,35 +67,36 @@ class SignUpFragment : Fragment() {
     }
 
     fun signUpUser(username : String, password : String){
-        databaseReference.orderByChild("b").equalTo(username).addListenerForSingleValueEvent(object :
-            ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if(!snapshot.exists()){
-                    val id = databaseReference.push().key
-                    val userData = UserData(a = id, b = username, c = password)
-                    databaseReference.child(id!!).setValue(userData)
-                    Snackbar.make(clRoot, "Sign up successfull", Snackbar.LENGTH_SHORT).show()
-                    val handler = Handler()
-                    val runnable = object : Runnable {
-                        override fun run () {
-                            fragmentManager?.popBackStack()
-                        }
-                    }
-                    val delayMillis: Long = 1000
-                    handler.postDelayed(runnable, delayMillis)
-                }else{
-                    Snackbar.make(clRoot, "User already exists", Snackbar.LENGTH_SHORT).show()
+        viewModel.viewModelScope.launch {
+            viewModel.signUpUser(UserData(null,username, password))
+            viewModel.state.observe(viewLifecycleOwner) { state ->
+                updateUI(state)
+            }
+        }
+    }
+
+    private fun updateUI(state: UserState) {
+        if(state.onSuccess.isNotBlank()){
+            Snackbar.make(clRoot, state.onSuccess, Snackbar.LENGTH_SHORT).show()
+            val handler = Handler()
+            val runnable = object : Runnable {
+                override fun run () {
+                    fragmentManager?.popBackStack()
                 }
             }
-
-            override fun onCancelled(error: DatabaseError) {
-                Snackbar.make(clRoot, "Database Error : ${error.message}", Snackbar.LENGTH_SHORT).show()
-            }
-        })
+            val delayMillis: Long = 1000
+            handler.postDelayed(runnable, delayMillis)
+        }
+        if(state.onError.isNotBlank()){
+            Snackbar.make(clRoot, state.onError, Snackbar.LENGTH_SHORT).show()
+        }
+        if(state.isLoading){
+            Snackbar.make(clRoot, "Signing you up..", Snackbar.LENGTH_SHORT).show()
+        }
     }
 
     companion object {
         @JvmStatic
-        fun newInstance() = SignUpFragment()
+        fun newInstance() = UserSignUpFragment()
     }
 }

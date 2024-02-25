@@ -1,6 +1,7 @@
-package com.app.mymemorygame.models
+package com.app.mymemorygame.domain
 
 import android.util.Log
+import com.app.mymemorygame.data.MemoryCard
 import com.app.mymemorygame.utils.DEFAULT_ICONS
 
 class MemoryGame(private val boardSize: BoardSize, customImages: List<String>?) {
@@ -19,7 +20,7 @@ class MemoryGame(private val boardSize: BoardSize, customImages: List<String>?) 
             cards   = randomized_images.map { MemoryCard(it) }
         }else{
             val randomized_images = (customImages + customImages).shuffled()
-            cards = randomized_images.map { MemoryCard(it.hashCode(), it)}
+            cards = randomized_images.map { MemoryCard(it.hashCode(), it) }
             Log.d(TAG, "cards = ${cards.toString()}")
         }
     }
